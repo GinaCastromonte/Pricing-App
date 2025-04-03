@@ -1,22 +1,30 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import pricingData from "../data/pricingData";
 
 const PricingTable = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const currentPlans = pricingData[isAnnual ? "yearly" : "monthly"];
+
   return (
     <div className="min-h-screen bg-[hsl(240,78%,98%)] flex flex-col items-center justify-center p-4">
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 pricing-background">
+      <div className="z-0 absolute top-0 bottom-0 right-0 left-0 min-w-screen min-h-screen">
+        <img
+          src="/images/Desktop.jpg"
+          alt="desktop-bg"
+          className="w-full h-full"
+        />
+      </div>
+      <div className="z-10 min-h-screen flex flex-col items-center justify-center p-4">
         <h1 className="text-4xl font-bold text-[#6E728E] mb-10">Our Pricing</h1>
 
         {/* Toggle Switch Container */}
         <div className="flex items-center gap-4 mb-12">
           <span
             className={`text-[hsl(234,14%,74%)] ${
-              !isAnnual ? "text-[hsl(232,13%,33%)]" : ""
+              isAnnual ? "text-[hsl(232,13%,33%)]" : ""
             }`}
           >
-            Annually
+            Monthly
           </span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
@@ -30,24 +38,24 @@ const PricingTable = () => {
           </button>
           <span
             className={`text-[hsl(234,14%,74%)] ${
-              isAnnual ? "text-[hsl(232,13%,33%)]" : ""
+              !isAnnual ? "text-[hsl(232,13%,33%)]" : ""
             }`}
           >
-            Monthly
+            Annually
           </span>
         </div>
 
         {/* Cards Container */}
-        <div className="flex flex-col md:flex-row gap-6">
-          {pricingData.map((plan, index) => {
+        <div className="flex flex-col md:flex-row">
+          {currentPlans.map((plan, index) => {
             const isHighlighted = index === 1;
             return (
               <div
                 key={index}
-                className={`rounded-lg shadow-lg p-8 w-80 flex flex-col items-center ${
+                className={`rounded-lg px-4 w-80 flex flex-col items-center ${
                   isHighlighted
-                    ? "bg-gradient-to-r from-[hsl(236,72%,79%)] to-[hsl(237,63%,64%)]"
-                    : "bg-white"
+                    ? "bg-gradient-to-r from-[hsl(236,72%,79%)] to-[hsl(237,63%,64%)] py-12"
+                    : "bg-white my-4 py-8"
                 }`}
               >
                 <h2
@@ -58,24 +66,24 @@ const PricingTable = () => {
                   {plan.title}
                 </h2>
                 <p
-                  className={`text-4xl font-bold mb-10 ${
+                  className={`text-5xl font-bold mb-10 ${
                     isHighlighted ? "text-white" : "text-[hsl(232,13%,33%)]"
                   }`}
                 >
                   {plan.price}
                 </p>
                 <ul
-                  className={`mb-10 space-y-4 w-full text-center  ${
+                  className={`mb-10 w-full text-center ${
                     isHighlighted ? "text-white" : "text-[hsl(234,14%,74%)]"
                   }`}
                 >
-                  <li className="border-b border-t pb-4 border-current/50">
+                  <li className="border-b border-t py-4 border-current/50">
                     {plan.storage}
                   </li>
-                  <li className="border-b pb-4 border-current/50">
+                  <li className="border-b py-4 border-current/50">
                     {plan.users}
                   </li>
-                  <li className="border-b pb-4 border-current/50">
+                  <li className="border-b py-4 border-current/50">
                     {plan.send}
                   </li>
                 </ul>
@@ -93,7 +101,6 @@ const PricingTable = () => {
           })}
         </div>
       </div>
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 bottom-background"></div>
     </div>
   );
 };
